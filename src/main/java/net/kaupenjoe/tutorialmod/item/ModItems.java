@@ -4,10 +4,7 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.kaupenjoe.tutorialmod.TutorialMod;
 import net.kaupenjoe.tutorialmod.block.ModBlocks;
 import net.kaupenjoe.tutorialmod.entity.ModEntities;
-import net.kaupenjoe.tutorialmod.item.custom.ChiselItem;
-import net.kaupenjoe.tutorialmod.item.custom.HammerItem;
-import net.kaupenjoe.tutorialmod.item.custom.ModArmorItem;
-import net.kaupenjoe.tutorialmod.item.custom.TomahawkItem;
+import net.kaupenjoe.tutorialmod.item.custom.*;
 import net.kaupenjoe.tutorialmod.sound.ModSounds;
 import net.minecraft.item.*;
 import net.minecraft.item.tooltip.TooltipType;
@@ -93,6 +90,9 @@ public class ModItems {
     public static final Item SPECTRE_STAFF = registerItem("spectre_staff",
             new Item(new Item.Settings().maxCount(1)));
 
+    // Villager Staff - NEW
+    public static final Item VILLAGER_STAFF = registerItem("villager_staff",
+            new VillagerStaffItem(new Item.Settings().maxCount(1)));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(TutorialMod.MOD_ID, name), item);
@@ -104,6 +104,11 @@ public class ModItems {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.INGREDIENTS).register(entries -> {
             entries.add(PINK_GARNET);
             entries.add(RAW_PINK_GARNET);
+        });
+
+        // Add Villager Staff to Combat Group
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.COMBAT).register(entries -> {
+            entries.add(VILLAGER_STAFF);
         });
     }
 }
