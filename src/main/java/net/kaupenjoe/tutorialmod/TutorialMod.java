@@ -37,7 +37,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradedItem;
 import net.minecraft.village.VillagerProfession;
-import net.fabricmc.fabric.api.registry.BrewingRecipeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,8 +78,7 @@ public class TutorialMod implements ModInitializer {
 			return ActionResult.PASS;
 		});
 
-		// ✅ Register custom potion recipe (Blood Rush)
-		BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, Items.SLIME_BALL, ModPotions.BLOOD_RUSH_POTION);
+		// ⚠ Removed BrewingRecipeRegistry since it no longer exists in newer Fabric versions
 
 		CompostingChanceRegistry.INSTANCE.add(ModItems.CAULIFLOWER, 0.5f);
 		CompostingChanceRegistry.INSTANCE.add(ModItems.CAULIFLOWER_SEEDS, 0.25f);
