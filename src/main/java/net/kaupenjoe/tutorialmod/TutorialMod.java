@@ -7,8 +7,6 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.fabricmc.fabric.api.registry.*;
-import net.fabricmc.fabric.api.recipe.v1.brewing.FabricBrewingRecipeRegistryBuilder;
-
 import net.kaupenjoe.tutorialmod.block.ModBlocks;
 import net.kaupenjoe.tutorialmod.block.entity.ModBlockEntities;
 import net.kaupenjoe.tutorialmod.component.ModDataComponentTypes;
@@ -28,7 +26,6 @@ import net.kaupenjoe.tutorialmod.util.HammerUsageEvent;
 import net.kaupenjoe.tutorialmod.util.ModLootTableModifiers;
 import net.kaupenjoe.tutorialmod.villager.ModVillagers;
 import net.kaupenjoe.tutorialmod.world.gen.ModWorldGeneration;
-
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.passive.SheepEntity;
@@ -40,13 +37,13 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradedItem;
 import net.minecraft.village.VillagerProfession;
-
+import net.fabricmc.fabric.api.registry.BrewingRecipeRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TutorialMod implements ModInitializer {
 	public static final String MOD_ID = "tutorialmod";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
 	public void onInitialize() {
@@ -55,10 +52,8 @@ public class TutorialMod implements ModInitializer {
 		ModBlocks.registerModBlocks();
 		ModDataComponentTypes.registerDataComponentTypes();
 		ModSounds.registerSounds();
-
 		ModEffects.registerEffects();
 		ModPotions.registerPotions();
-
 		ModEnchantmentEffects.registerEnchantmentEffects();
 		ModWorldGeneration.generateModWorldGen();
 		ModEntities.registerModEntities();
@@ -84,9 +79,8 @@ public class TutorialMod implements ModInitializer {
 			return ActionResult.PASS;
 		});
 
-		FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
-			builder.registerPotionRecipe(Potions.AWKWARD, Items.SLIME_BALL, ModPotions.BLOOD_RUSH_POTION);
-		});
+		// ✅ Register custom potion recipe (Blood Rush)
+		BrewingRecipeRegistry.registerPotionRecipe(Potions.AWKWARD, Items.SLIME_BALL, ModPotions.BLOOD_RUSH_POTION);
 
 		CompostingChanceRegistry.INSTANCE.add(ModItems.CAULIFLOWER, 0.5f);
 		CompostingChanceRegistry.INSTANCE.add(ModItems.CAULIFLOWER_SEEDS, 0.25f);
@@ -105,48 +99,35 @@ public class TutorialMod implements ModInitializer {
 		FabricDefaultAttributeRegistry.register(ModEntities.MANTIS, MantisEntity.createAttributes());
 
 		TradeOfferHelper.registerVillagerOffers(VillagerProfession.FARMER, 1, factories -> {
-			factories.add((entity, random) -> new TradeOffer(
-					new TradedItem(Items.EMERALD, 3),
+			factories.add((entity, random) -> new TradeOffer(new TradedItem(Items.EMERALD, 3),
 					new ItemStack(ModItems.CAULIFLOWER, 8), 7, 2, 0.04f));
-
-			factories.add((entity, random) -> new TradeOffer(
-					new TradedItem(Items.DIAMOND, 9),
+			factories.add((entity, random) -> new TradeOffer(new TradedItem(Items.DIAMOND, 9),
 					new ItemStack(ModItems.CAULIFLOWER_SEEDS, 2), 3, 4, 0.04f));
 		});
 
 		TradeOfferHelper.registerVillagerOffers(VillagerProfession.FARMER, 2, factories -> {
-			factories.add((entity, random) -> new TradeOffer(
-					new TradedItem(Items.EMERALD, 12),
+			factories.add((entity, random) -> new TradeOffer(new TradedItem(Items.EMERALD, 12),
 					new ItemStack(ModItems.HONEY_BERRIES, 5), 4, 7, 0.04f));
 		});
 
 		TradeOfferHelper.registerVillagerOffers(ModVillagers.KAUPENGER, 1, factories -> {
-			factories.add((entity, random) -> new TradeOffer(
-					new TradedItem(Items.EMERALD, 10),
+			factories.add((entity, random) -> new TradeOffer(new TradedItem(Items.EMERALD, 10),
 					new ItemStack(ModItems.CHISEL, 1), 4, 7, 0.04f));
-
-			factories.add((entity, random) -> new TradeOffer(
-					new TradedItem(Items.EMERALD, 16),
+			factories.add((entity, random) -> new TradeOffer(new TradedItem(Items.EMERALD, 16),
 					new ItemStack(ModItems.RAW_PINK_GARNET, 1), 4, 7, 0.04f));
 		});
 
 		TradeOfferHelper.registerVillagerOffers(ModVillagers.KAUPENGER, 2, factories -> {
-			factories.add((entity, random) -> new TradeOffer(
-					new TradedItem(Items.EMERALD, 10),
+			factories.add((entity, random) -> new TradeOffer(new TradedItem(Items.EMERALD, 10),
 					new ItemStack(ModItems.CHISEL, 1), 4, 7, 0.04f));
-
-			factories.add((entity, random) -> new TradeOffer(
-					new TradedItem(ModItems.PINK_GARNET, 16),
+			factories.add((entity, random) -> new TradeOffer(new TradedItem(ModItems.PINK_GARNET, 16),
 					new ItemStack(ModItems.TOMAHAWK, 1), 3, 12, 0.09f));
 		});
 
 		TradeOfferHelper.registerWanderingTraderOffers(1, factories -> {
-			factories.add((entity, random) -> new TradeOffer(
-					new TradedItem(Items.EMERALD, 10),
+			factories.add((entity, random) -> new TradeOffer(new TradedItem(Items.EMERALD, 10),
 					new ItemStack(ModItems.CHISEL, 1), 4, 7, 0.04f));
-
-			factories.add((entity, random) -> new TradeOffer(
-					new TradedItem(ModItems.PINK_GARNET, 16),
+			factories.add((entity, random) -> new TradeOffer(new TradedItem(ModItems.PINK_GARNET, 16),
 					new ItemStack(ModItems.TOMAHAWK, 1), 3, 12, 0.09f));
 		});
 	}
